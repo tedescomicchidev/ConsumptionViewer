@@ -10,6 +10,7 @@ A Python web application for managing Microsoft Azure Consumption Commitment (MA
 - **Data Editor**: Interactive spreadsheet-like editor with auto-computed fields
 - **Risk Analysis**: Automated risk flag detection for consumption plans
 - **Export/Import**: Full round-trip CSV export and re-import capabilities
+- **Authentication**: Microsoft Entra ID integration for secure user authentication (optional)
 
 ## 📋 Requirements
 
@@ -40,18 +41,26 @@ Copy the example environment file and update with your settings:
 cp .env.example .env
 ```
 
-Edit `.env` with your Azure SQL Database credentials, or leave default for SQLite:
+Edit `.env` with your configuration:
 
 ```
-# For Azure SQL
+# For Azure SQL Database
 DB_SERVER=your-server.database.windows.net
 DB_NAME=ConsumptionViewerDB
 DB_USERNAME=your-username
 DB_PASSWORD=your-password
 
+# For Microsoft Entra ID Authentication (Optional - v1.2)
+# Leave blank to run in demo mode without authentication
+AZURE_CLIENT_ID=your-application-client-id
+AZURE_TENANT_ID=your-directory-tenant-id
+AZURE_CLIENT_SECRET=your-client-secret
+
 # For local SQLite (default if Azure SQL not configured)
 # No configuration needed - will auto-create consumption_viewer.db
 ```
+
+**Note**: If Entra ID credentials are not configured, the app runs in demo mode.
 
 ### 4. Run the Application
 
@@ -60,6 +69,27 @@ streamlit run app.py
 ```
 
 The application will open in your browser at `http://localhost:8501`
+
+## 🔐 Authentication
+
+The application supports two modes:
+
+### Demo Mode (Default)
+If Entra ID is not configured, you can use the app without authentication:
+- Click "Continue in Demo Mode" on the login screen
+- All operations are tracked as "demo@example.com"
+
+### Microsoft Entra ID Authentication (v1.2)
+For production use with real user authentication:
+1. Register an application in Microsoft Entra ID (Azure Portal)
+2. Configure environment variables in `.env`:
+   - `AZURE_CLIENT_ID`
+   - `AZURE_TENANT_ID`
+   - `AZURE_CLIENT_SECRET`
+3. Restart the application
+4. Sign in with your Microsoft account
+
+**See [AUTHENTICATION.md](AUTHENTICATION.md) for detailed setup instructions.**
 
 ## 📊 Usage
 
@@ -207,6 +237,8 @@ CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0
 - [Product Requirements Document (PRD)](docs/PRD.md) - Full specification
 - [API Documentation](docs/API.md) - Service layer APIs
 - [Database Schema](sql/schema.sql) - Database design
+- [Authentication Guide](AUTHENTICATION.md) - Microsoft Entra ID setup
+- [Deployment Guide](DEPLOYMENT.md) - Azure deployment instructions
 
 ## 🤝 Contributing
 

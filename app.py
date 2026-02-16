@@ -20,8 +20,10 @@ from src.dashboards.charts import (
     create_time_to_steady_chart,
     create_top_workloads_chart,
 )
+from src.services.auth_service import get_current_user, require_authentication
 from src.services.data_service import DataService
 from src.services.validation import validate_csv_schema
+from src.ui.auth_ui import show_login_screen, show_user_info
 
 # Page configuration
 st.set_page_config(
@@ -43,11 +45,14 @@ def initialize_session_state():
     if "current_dataset_id" not in st.session_state:
         st.session_state.current_dataset_id = None
     if "current_user" not in st.session_state:
-        st.session_state.current_user = "demo_user"
+        # Get current user from auth service
+        st.session_state.current_user = get_current_user()
     if "uploaded_data" not in st.session_state:
         st.session_state.uploaded_data = None
     if "dataset_name" not in st.session_state:
         st.session_state.dataset_name = None
+    if "authenticated" not in st.session_state:
+        st.session_state.authenticated = False
 
 
 def upload_screen():
@@ -157,6 +162,8 @@ def workspace_screen():
             st.rerun()
 
     with col3:
+        # Update current user from auth service
+        st.session_state.current_user = get_current_user()
         st.caption(f"User: {st.session_state.current_user}")
 
     # Load data
@@ -347,6 +354,15 @@ def editor_tab(df: pd.DataFrame):
 def main():
     """Main application entry point"""
     initialize_session_state()
+
+    # Check authentication
+    if not require_authentication():
+        # Show login screen if authentication is required and user is not authenticated
+        show_login_screen()
+        return
+
+    # Show user info in sidebar
+    show_user_info()
 
     # Show upload or workspace based on state
     if st.session_state.current_dataset_id is None:
