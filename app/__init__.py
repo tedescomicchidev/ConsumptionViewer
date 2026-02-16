@@ -1,0 +1,1 @@
+"""Consumption Viewer application package."""
