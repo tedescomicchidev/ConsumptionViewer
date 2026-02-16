@@ -1,0 +1,11 @@
+Workload,Scenario,Azure Services,Start Month,Ramp-Up Duration (Months),Ramp-Up Start Consumption (CHF),Steady-State Monthly Consumption (CHF)
+Customer Portal Modernization,Replatform,App Service Web Apps; Azure SQL Database; Application Insights,Jan-2026,6,5000,25000
+Data Analytics Platform,New Build,Azure Synapse Analytics; Data Lake Storage; Power BI,Feb-2026,8,0,35000
+Legacy ERP Migration,Rehost,Azure Virtual Machines; Azure Storage; ExpressRoute,Jan-2026,4,15000,30000
+IoT Monitoring Solution,Refactor,IoT Hub; Stream Analytics; Cosmos DB; Functions,Mar-2026,5,2000,18000
+Machine Learning Pipeline,New Build,Azure Machine Learning; AKS; Container Registry,Apr-2026,9,0,28000
+Customer CRM System,Replatform,Dynamics 365; Power Apps; Azure Active Directory,Feb-2026,3,8000,22000
+Mobile App Backend,New Build,App Service; API Management; Redis Cache; CDN,Jan-2026,6,0,15000
+Document Management,Rehost,SharePoint Online; Azure Files; Azure Backup,Mar-2026,2,12000,20000
+E-commerce Platform,Refactor,App Service; Azure SQL; Azure Search; CDN,Jan-2026,7,3000,40000
+DevOps Automation,New Build,Azure DevOps; GitHub Actions; Container Registry,May-2026,4,1000,8000
