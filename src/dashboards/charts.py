@@ -1,5 +1,6 @@
 """Dashboard chart generation for CEO/CFO/CTO views"""
-from typing import Any, Dict, List
+
+from typing import Any, Dict
 
 import pandas as pd
 import plotly.express as px
@@ -13,7 +14,7 @@ from src.utils.risk_analysis import calculate_all_risk_flags
 def create_kpi_tiles(df: pd.DataFrame) -> Dict[str, Any]:
     """
     Create KPI tiles data.
-    
+
     Returns dict with:
     - total_year1_acr: Total Year-1 ACR across all workloads
     - workload_count: Number of workloads
@@ -90,9 +91,7 @@ def create_scenario_split_chart(df: pd.DataFrame) -> go.Figure:
         ]
     )
 
-    fig.update_layout(
-        title="Year-1 ACR by Scenario", template="plotly_white", showlegend=True
-    )
+    fig.update_layout(title="Year-1 ACR by Scenario", template="plotly_white", showlegend=True)
 
     return fig
 
@@ -102,9 +101,8 @@ def create_top_workloads_chart(df: pd.DataFrame, top_n: int = 10) -> go.Figure:
     Create top N workloads by Total Year-1 ACR (horizontal bar chart).
     """
     # Sort by ACR and get top N
-    top_workloads = (
-        df.nlargest(top_n, "Total Year-1 Estimated ACR (CHF)")
-        .sort_values("Total Year-1 Estimated ACR (CHF)")
+    top_workloads = df.nlargest(top_n, "Total Year-1 Estimated ACR (CHF)").sort_values(
+        "Total Year-1 Estimated ACR (CHF)"
     )
 
     fig = go.Figure(

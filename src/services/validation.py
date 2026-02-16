@@ -1,11 +1,10 @@
 """CSV validation service"""
-from typing import Any, Dict, List, Tuple
+
+from typing import List
 
 import pandas as pd
 
 from src.models.schema import (
-    CSV_SCHEMA_V1,
-    COMPUTED_COLUMNS,
     REQUIRED_COLUMNS,
     SCHEMA_BY_NAME,
     ColumnType,
@@ -50,20 +49,17 @@ class ValidationResult:
             return pd.DataFrame(columns=["Row", "Column", "Error"])
 
         return pd.DataFrame(
-            [
-                {"Row": e.row_index, "Column": e.column, "Error": e.error}
-                for e in self.errors
-            ]
+            [{"Row": e.row_index, "Column": e.column, "Error": e.error} for e in self.errors]
         )
 
 
 def validate_csv_schema(df: pd.DataFrame) -> ValidationResult:
     """
     Validate CSV schema and data types.
-    
+
     Args:
         df: DataFrame loaded from CSV
-        
+
     Returns:
         ValidationResult with errors and warnings
     """
@@ -139,10 +135,10 @@ def validate_csv_schema(df: pd.DataFrame) -> ValidationResult:
 def process_csv_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Process and clean CSV data, compute derived fields.
-    
+
     Args:
         df: Raw DataFrame from CSV
-        
+
     Returns:
         Processed DataFrame with computed fields
     """

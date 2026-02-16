@@ -1,8 +1,8 @@
 """Tests for CSV validation"""
-import pandas as pd
-import pytest
 
-from src.services.validation import validate_csv_schema, process_csv_data
+import pandas as pd
+
+from src.services.validation import process_csv_data, validate_csv_schema
 
 
 def test_valid_csv_passes_validation():
@@ -17,9 +17,9 @@ def test_valid_csv_passes_validation():
         "Steady-State Monthly Consumption (CHF)": [25000.0],
     }
     df = pd.DataFrame(data)
-    
+
     result = validate_csv_schema(df)
-    
+
     assert result.is_valid()
     assert len(result.errors) == 0
 
@@ -36,9 +36,9 @@ def test_missing_required_column_fails():
         "Steady-State Monthly Consumption (CHF)": [25000.0],
     }
     df = pd.DataFrame(data)
-    
+
     result = validate_csv_schema(df)
-    
+
     assert not result.is_valid()
     assert len(result.errors) > 0
 
@@ -55,9 +55,9 @@ def test_invalid_integer_fails():
         "Steady-State Monthly Consumption (CHF)": [25000.0],
     }
     df = pd.DataFrame(data)
-    
+
     result = validate_csv_schema(df)
-    
+
     assert not result.is_valid()
 
 
@@ -73,9 +73,9 @@ def test_out_of_range_integer_fails():
         "Steady-State Monthly Consumption (CHF)": [25000.0],
     }
     df = pd.DataFrame(data)
-    
+
     result = validate_csv_schema(df)
-    
+
     assert not result.is_valid()
 
 
@@ -91,16 +91,16 @@ def test_process_csv_computes_fields():
         "Steady-State Monthly Consumption (CHF)": [25000.0],
     }
     df = pd.DataFrame(data)
-    
+
     result_df = process_csv_data(df)
-    
+
     # Check computed columns exist
     assert "Avg Monthly Consumption During Ramp-Up (CHF)" in result_df.columns
     assert "Total Ramp-Up Consumption (CHF)" in result_df.columns
     assert "Year-1 Steady-State Months" in result_df.columns
     assert "Year-1 Steady-State Consumption (CHF)" in result_df.columns
     assert "Total Year-1 Estimated ACR (CHF)" in result_df.columns
-    
+
     # Check computed values
     assert result_df["Avg Monthly Consumption During Ramp-Up (CHF)"][0] == 15000.0
     assert result_df["Total Ramp-Up Consumption (CHF)"][0] == 90000.0
@@ -122,8 +122,8 @@ def test_extra_columns_warning():
         "Extra Column": ["Extra Data"],  # Extra column
     }
     df = pd.DataFrame(data)
-    
+
     result = validate_csv_schema(df)
-    
+
     assert result.is_valid()
     assert len(result.warnings) > 0

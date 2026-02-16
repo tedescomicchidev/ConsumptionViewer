@@ -1,15 +1,14 @@
 """Data service layer for managing datasets and revisions"""
+
 import json
 import uuid
-from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
 import pandas as pd
 from sqlalchemy.orm import Session
 
 from src.models.database import AuditLog, Dataset, DatasetRevision, PlanRow
 from src.services.validation import process_csv_data, validate_csv_schema
-from src.utils.formulas import compute_derived_fields
 
 
 class DataService:
@@ -24,12 +23,12 @@ class DataService:
     ) -> Tuple[Optional[Dataset], Optional[str]]:
         """
         Create a new dataset from CSV data.
-        
+
         Args:
             df: DataFrame with CSV data
             filename: Original filename
             dataset_name: Optional custom name for the dataset
-            
+
         Returns:
             Tuple of (Dataset object, error message if failed)
         """
@@ -79,9 +78,7 @@ class DataService:
                 ),
                 total_ramp_up_consumption=float(row["Total Ramp-Up Consumption (CHF)"]),
                 year1_steady_state_months=int(row["Year-1 Steady-State Months"]),
-                year1_steady_state_consumption=float(
-                    row["Year-1 Steady-State Consumption (CHF)"]
-                ),
+                year1_steady_state_consumption=float(row["Year-1 Steady-State Consumption (CHF)"]),
                 total_year1_estimated_acr=float(row["Total Year-1 Estimated ACR (CHF)"]),
             )
             revision.plan_rows.append(plan_row)
@@ -109,12 +106,12 @@ class DataService:
     ) -> Tuple[Optional[DatasetRevision], Optional[str]]:
         """
         Save changes as a new revision.
-        
+
         Args:
             dataset_id: UUID of the dataset
             updated_df: Updated DataFrame with changes
             change_summary: Summary of changes made
-            
+
         Returns:
             Tuple of (DatasetRevision object, error message if failed)
         """
@@ -168,9 +165,7 @@ class DataService:
                 ),
                 total_ramp_up_consumption=float(row["Total Ramp-Up Consumption (CHF)"]),
                 year1_steady_state_months=int(row["Year-1 Steady-State Months"]),
-                year1_steady_state_consumption=float(
-                    row["Year-1 Steady-State Consumption (CHF)"]
-                ),
+                year1_steady_state_consumption=float(row["Year-1 Steady-State Consumption (CHF)"]),
                 total_year1_estimated_acr=float(row["Total Year-1 Estimated ACR (CHF)"]),
             )
             revision.plan_rows.append(plan_row)

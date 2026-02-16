@@ -1,8 +1,7 @@
 """Database models for MACC Consumption Viewer"""
+
 import uuid
 from datetime import datetime
-from decimal import Decimal
-from typing import Optional
 
 from sqlalchemy import (
     DECIMAL,
@@ -25,9 +24,7 @@ class Dataset(Base):
 
     __tablename__ = "datasets"
 
-    dataset_id = Column(
-        UNIQUEIDENTIFIER, primary_key=True, default=uuid.uuid4, nullable=False
-    )
+    dataset_id = Column(UNIQUEIDENTIFIER, primary_key=True, default=uuid.uuid4, nullable=False)
     name = Column(String(200), nullable=True)
     original_filename = Column(String(400), nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
@@ -46,9 +43,7 @@ class DatasetRevision(Base):
 
     __tablename__ = "dataset_revisions"
 
-    revision_id = Column(
-        UNIQUEIDENTIFIER, primary_key=True, default=uuid.uuid4, nullable=False
-    )
+    revision_id = Column(UNIQUEIDENTIFIER, primary_key=True, default=uuid.uuid4, nullable=False)
     dataset_id = Column(
         UNIQUEIDENTIFIER, ForeignKey("datasets.dataset_id", ondelete="CASCADE"), nullable=False
     )

@@ -1,5 +1,5 @@
 """Tests for formula computation engine"""
-import pytest
+
 from decimal import Decimal
 
 from src.utils.formulas import compute_derived_fields, generate_monthly_curve
@@ -12,9 +12,9 @@ def test_compute_derived_fields_zero_ramp():
         "Ramp-Up Start Consumption (CHF)": 0,
         "Steady-State Monthly Consumption (CHF)": 10000,
     }
-    
+
     result = compute_derived_fields(row)
-    
+
     assert result["Avg Monthly Consumption During Ramp-Up (CHF)"] == Decimal("5000.00")
     assert result["Total Ramp-Up Consumption (CHF)"] == Decimal("0.00")
     assert result["Year-1 Steady-State Months"] == 12
@@ -29,9 +29,9 @@ def test_compute_derived_fields_with_ramp():
         "Ramp-Up Start Consumption (CHF)": 5000,
         "Steady-State Monthly Consumption (CHF)": 25000,
     }
-    
+
     result = compute_derived_fields(row)
-    
+
     assert result["Avg Monthly Consumption During Ramp-Up (CHF)"] == Decimal("15000.00")
     assert result["Total Ramp-Up Consumption (CHF)"] == Decimal("90000.00")
     assert result["Year-1 Steady-State Months"] == 6
@@ -46,9 +46,9 @@ def test_compute_derived_fields_full_year_ramp():
         "Ramp-Up Start Consumption (CHF)": 0,
         "Steady-State Monthly Consumption (CHF)": 20000,
     }
-    
+
     result = compute_derived_fields(row)
-    
+
     assert result["Avg Monthly Consumption During Ramp-Up (CHF)"] == Decimal("10000.00")
     assert result["Total Ramp-Up Consumption (CHF)"] == Decimal("120000.00")
     assert result["Year-1 Steady-State Months"] == 0
@@ -63,9 +63,9 @@ def test_generate_monthly_curve_zero_ramp():
         "Ramp-Up Start Consumption (CHF)": 0,
         "Steady-State Monthly Consumption (CHF)": 10000,
     }
-    
+
     curve = generate_monthly_curve(row)
-    
+
     assert len(curve) == 12
     assert all(v == 10000 for v in curve)
 
@@ -77,9 +77,9 @@ def test_generate_monthly_curve_with_ramp():
         "Ramp-Up Start Consumption (CHF)": 0,
         "Steady-State Monthly Consumption (CHF)": 9000,
     }
-    
+
     curve = generate_monthly_curve(row)
-    
+
     assert len(curve) == 12
     # First 3 months should ramp up
     assert curve[0] == 3000  # Linear interpolation: 0 + (9000-0) * 1/3
@@ -96,9 +96,9 @@ def test_generate_monthly_curve_with_baseline():
         "Ramp-Up Start Consumption (CHF)": 10000,
         "Steady-State Monthly Consumption (CHF)": 30000,
     }
-    
+
     curve = generate_monthly_curve(row)
-    
+
     assert len(curve) == 12
     # Should ramp from 10000 to 30000 over 4 months
     assert curve[0] == 15000  # 10000 + (30000-10000) * 1/4

@@ -1,4 +1,5 @@
 """Main Streamlit application for MACC Consumption Viewer"""
+
 import io
 import uuid
 from datetime import datetime
@@ -83,9 +84,7 @@ def upload_screen():
                 validation_result = validate_csv_schema(df)
 
             if validation_result.is_valid():
-                st.success(
-                    f"✓ Validation passed! Found {len(df)} rows with all required columns."
-                )
+                st.success(f"✓ Validation passed! Found {len(df)} rows with all required columns.")
 
                 # Show warnings if any
                 if validation_result.warnings:

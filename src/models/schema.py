@@ -1,7 +1,8 @@
 """CSV schema definition and validation for v1"""
+
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 
 class ColumnType(Enum):
